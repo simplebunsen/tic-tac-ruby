@@ -9,13 +9,19 @@ class Field
     @type = type
   end
 
+  def to_s()
+    return @type
+  end
+
   def Field.empty_board()
     board = []
 
     3.times do 
-      3.times {board.push Field.new(Field.@@TYPE_EMPTY)}
+      3.times {board.push Field.new(@@TYPE_EMPTY)}
     end
-    
+
     return board
   end
 end
+
+puts Field.empty_board
