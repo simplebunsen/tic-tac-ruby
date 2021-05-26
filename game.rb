@@ -14,7 +14,7 @@ class Board
 
   def beautify()
     # returns beautiful rendition of the current board
-    puts @board
+    puts(@board.map { |x| x.join('') })
   end
 
   def move(x, y, type)
@@ -29,7 +29,7 @@ class Board
 end
 
 # A single field on a board
-class Field < Board
+class Field
   include FieldHelper
   attr_accessor :type
 
@@ -42,3 +42,6 @@ class Field < Board
   end
 
 end
+
+board = Board.new
+board.beautify
