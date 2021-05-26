@@ -17,12 +17,36 @@ class Board
     puts(@board.map { |x| x.join('') })
   end
 
-  def move(x, y, type)
+  def move(x_pos, y_pos, type)
     # inputs move of type Z at X,Y (if not illegal!)
+    return false unless @board[x_pos][y_pos] == TYPE_EMPTY
+
+    @board[x_pos][y_pos] = type
+    true
   end
 
   def winner?
     # checks if board has winner (or draw) and returns the winner type
+  end
+
+  private
+
+  def winner_rows?
+    @board.each do |row|
+      row.all? { |field| field == row[0] }
+    end
+  end
+
+  def winner_collums?
+
+  end
+
+  def winner_diagonals?
+
+  end
+
+  def draw?
+    @board.none? { |field| field == TYPE_EMPTY }
   end
 
 
@@ -38,7 +62,7 @@ class Field
   end
 
   def to_s
-    @type << "b"
+    @type
   end
 end
 
