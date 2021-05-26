@@ -9,10 +9,10 @@ end
 class Board
   include FieldHelper
   def initialize
-    @board = Array.new(3) { Array.new(3, TYPE_EMPTY) }
+    @board = Array.new(3) { Array.new(3) { Field.new(TYPE_EMPTY) } }
   end
 
-  def beautify()
+  def beautify
     # returns beautiful rendition of the current board
     puts(@board.map { |x| x.join('') })
   end
@@ -21,7 +21,7 @@ class Board
     # inputs move of type Z at X,Y (if not illegal!)
   end
 
-  def winner?()
+  def winner?
     # checks if board has winner (or draw) and returns the winner type
   end
 
@@ -38,9 +38,8 @@ class Field
   end
 
   def to_s
-    return @type
+    @type << "b"
   end
-
 end
 
 board = Board.new
