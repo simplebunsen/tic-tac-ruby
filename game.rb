@@ -8,6 +8,7 @@ end
 # A playing board
 class Board
   include FieldHelper
+
   def initialize
     @board = Array.new(3) { Array.new(3) { Field.new(TYPE_EMPTY) } }
   end
@@ -19,7 +20,7 @@ class Board
 
   def move(x_pos, y_pos, type)
     # inputs move of type Z at X,Y (if not illegal!)
-    return false unless @board[x_pos][y_pos] == TYPE_EMPTY
+    return false unless @board[x_pos][y_pos].type == TYPE_EMPTY
 
     @board[x_pos][y_pos] = type
     true
@@ -67,4 +68,6 @@ class Field
 end
 
 board = Board.new
+board.beautify
+board.move(1, 1, FieldHelper::TYPE_O)
 board.beautify
