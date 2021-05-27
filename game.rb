@@ -28,6 +28,11 @@ class Board
 
   def winner?
     # checks if board has winner (or draw) and returns the winner type
+    if empty_spots? return false
+  end
+
+  def empty_spots?
+    @board.any? { |row| row.any? { |field| field == TYPE_EMPTY } }
   end
 
   private
@@ -38,12 +43,12 @@ class Board
     end
   end
 
-  def winner_collums?
+  def winner_collumns?
 
   end
 
   def winner_diagonals?
-
+    
   end
 
   def draw?
