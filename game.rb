@@ -15,7 +15,8 @@ class Board
 
   def beautify
     # returns beautiful rendition of the current board
-    puts(@board.map { |x| x.join('') })
+    puts '[ ][A][B][C]'
+    @board.map { |x| x.join('') }.each_with_index { |e, i| puts "[#{i + 1}]" << e }
   end
 
   # returns false if move could not be made
@@ -32,7 +33,9 @@ class Board
     winner_type = winner_rows?
     winner_type ||= winner_collumns?
     winner_type ||= winner_diagonals?
-    
+
+    puts "winner type evald as #{winner_type}"
+
     # if a draw
     return TYPE_EMPTY if !empty_spots? && winner_type == false
 
@@ -43,15 +46,20 @@ class Board
 
   def winner_rows?
     @board.each do |row|
-      return true if row.all? { |field| field == row[0] }
+      return row[0] if row.all? { |field| field == row[0] }
     end
     false
   end
 
   def winner_collumns?
+    @board.transpose.each do |collumn|
+      return collumn[0] if collumn.all? { |field| field == collumn[0] }
+    end
+    false
   end
 
-  def winner_diagonals? 
+  def winner_diagonals?
+    (0..2).collect { |i| @board[i][i] }.all? { |field| field == @board[1][1] }
   end
 
   def empty_spots?
@@ -75,7 +83,9 @@ end
 
 board = Board.new
 board.beautify
+puts "no winnner: #{board.winner?}"
+board.move(1, 0, FieldHelper::TYPE_O)
 board.move(1, 1, FieldHelper::TYPE_O)
-board.move(1, 1, FieldHelper::TYPE_O)
-board.move(1, 1, FieldHelper::TYPE_O)
+board.move(1, 2, FieldHelper::TYPE_O)
 board.beautify
+puts "winner is #{board.winner?}"
