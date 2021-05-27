@@ -67,7 +67,7 @@ class Board
   end
 end
 
-# A single field on a board
+# A single humble field on a board
 class Field
   include FieldHelper
   attr_accessor :type
