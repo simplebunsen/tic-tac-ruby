@@ -18,6 +18,7 @@ class Board
     puts(@board.map { |x| x.join('') })
   end
 
+  # returns false if move could not be made
   def move(x_pos, y_pos, type)
     # inputs move of type Z at X,Y (if not illegal!)
     return false unless @board[x_pos][y_pos].type == TYPE_EMPTY
@@ -28,34 +29,34 @@ class Board
 
   def winner?
     # checks if board has winner (or draw) and returns the winner type
-    if empty_spots? return false
-  end
+    winner_type = winner_rows?
+    winner_type ||= winner_collumns?
+    winner_type ||= winner_diagonals?
+    
+    # if a draw
+    return TYPE_EMPTY if !empty_spots? && winner_type == false
 
-  def empty_spots?
-    @board.any? { |row| row.any? { |field| field == TYPE_EMPTY } }
+    winner_type
   end
 
   private
 
   def winner_rows?
     @board.each do |row|
-      row.all? { |field| field == row[0] }
+      return true if row.all? { |field| field == row[0] }
     end
+    false
   end
 
   def winner_collumns?
-
   end
 
-  def winner_diagonals?
-    
+  def winner_diagonals? 
   end
 
-  def draw?
-    @board.none? { |field| field == TYPE_EMPTY }
+  def empty_spots?
+    @board.any? { |row| row.any? { |field| field == TYPE_EMPTY } }
   end
-
-
 end
 
 # A single field on a board
@@ -74,5 +75,7 @@ end
 
 board = Board.new
 board.beautify
+board.move(1, 1, FieldHelper::TYPE_O)
+board.move(1, 1, FieldHelper::TYPE_O)
 board.move(1, 1, FieldHelper::TYPE_O)
 board.beautify
