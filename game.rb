@@ -81,11 +81,30 @@ class Field
   end
 end
 
-board = Board.new
-board.beautify
-puts "no winnner: #{board.winner?}"
-board.move(1, 0, FieldHelper::TYPE_O)
-board.move(1, 1, FieldHelper::TYPE_O)
-board.move(1, 2, FieldHelper::TYPE_O)
-board.beautify
-puts "winner is #{board.winner?}"
+puts 'Welcome to the bi-annual Tic Tac Ruby Championships!\n Chose if you want to play against your friend or the computer! [F/C]'
+while (input = gets.chomp)
+  case input
+  when 'F'
+    start_game_human
+  when 'C'
+    start_game_comp
+  else
+    puts 'wrong input, please choose'
+  end
+end
+
+def start_game_human
+  board = Board.new
+  puts "X starts."
+  board.beautify
+  puts 'Chose your move. (input: ROW COLLUMN, for example: 1 A)'
+  #pseudocode!!!
+  move = gets.chomp.split(' ')
+  if move[0].number? && (A..C) == move[1] && !move[2].exist?
+
+  end
+end
+
+def start_game_comp
+  puts gay
+end
