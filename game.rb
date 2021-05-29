@@ -109,7 +109,7 @@ loop do
   when true
     current_type = TYPE_X
   when false
-    current_type = Type_0
+    current_type = TYPE_O
   end
 
   board.beautify
