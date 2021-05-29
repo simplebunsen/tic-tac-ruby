@@ -39,6 +39,8 @@ class Board
     # if a draw
     return TYPE_EMPTY if !empty_spots? && winner_type == false
 
+    puts "got past draw"
+
     winner_type
   end
 
@@ -60,10 +62,14 @@ class Board
 
   def winner_diagonals?
     (0..2).collect { |i| @board[i][i] }.all? { |field| field == @board[1][1] }
+    #TODO: Antediagonal
+    false
   end
 
   def empty_spots?
-    @board.any? { |row| row.any? { |field| field == TYPE_EMPTY } }
+    var = @board.any? { |row| row.any? { |field| field.type == TYPE_EMPTY } }
+    puts var
+    var
   end
 end
 
@@ -81,30 +87,28 @@ class Field
   end
 end
 
-puts 'Welcome to the bi-annual Tic Tac Ruby Championships!\n Chose if you want to play against your friend or the computer! [F/C]'
-while (input = gets.chomp)
-  case input
-  when 'F'
-    start_game_human
-  when 'C'
-    start_game_comp
-  else
-    puts 'wrong input, please choose'
-  end
-end
+input_helper_array = ['A', 'B', 'C']
 
-def start_game_human
-  board = Board.new
-  puts "X starts."
+puts 'Welcome to the bi-annual Tic Tac Ruby Championships!'
+board = Board.new
+puts 'X starts.'
+
+loop do
+  puts "Inloop"
+  break if board.winner?
+
+  current_type = TYPE_X
   board.beautify
+
   puts 'Chose your move. (input: ROW COLLUMN, for example: 1 A)'
-  #pseudocode!!!
-  move = gets.chomp.split(' ')
-  if move[0].number? && (A..C) == move[1] && !move[2].exist?
+  move = input.split(' ')
 
+  unless (1..3).include?(move[0].to_i) && input_helper_array.include?(move[1]) && move[2].nil?
+    puts "Error in your input #{move}, try again!"
+    next
   end
+
+  board.move(move[0], move[1], current_type)
 end
 
-def start_game_comp
-  puts gay
-end
+puts "Winner of current round is: #{board.winner?}"
