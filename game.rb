@@ -12,6 +12,7 @@ class Board
   include FieldHelper
 
   def initialize
+    # create a 2D Array with unique empty Field Objects in every slot
     @board = Array.new(3) { Array.new(3) { Field.new(TYPE_EMPTY) } }
   end
 
@@ -89,15 +90,28 @@ end
 
 input_helper_array = ['A', 'B', 'C']
 
+# bootleg type variables
+TYPE_X = '[X]'.freeze
+TYPE_O = '[O]'.freeze
+TYPE_EMPTY = '[_]'.freeze
+
+
 puts 'Welcome to the bi-annual Tic Tac Ruby Championships!'
 board = Board.new
 puts 'X starts.'
 
+move_number = 0
+
 loop do
-  puts "Inloop"
   break if board.winner?
 
-  current_type = Field.TYPE_X
+  case move_number.odd?
+  when true
+    current_type = TYPE_X
+  when false
+    current_type = Type_0
+  end
+
   board.beautify
 
   puts 'Chose your move. (input: ROW COLLUMN, for example: 1 A)'
@@ -107,8 +121,7 @@ loop do
     puts "Error in your input #{move}, try again!"
     next
   end
-
-  board.move(move[0], move[1], current_type)
+  move_number += 1 if board.move(move[0], move[1], current_type)
 end
 
 puts "Winner of current round is: #{board.winner?}"
