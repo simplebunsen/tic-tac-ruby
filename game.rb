@@ -121,7 +121,13 @@ loop do
     puts "Error in your input #{move}, try again!"
     next
   end
-  move_number += 1 if board.move(move[0], move[1], current_type)
+
+  if board.move(move[0], move[1], current_type)
+    move_number += 1
+    puts 'successful'
+  else
+    puts "move to #{move[0]} / #{move[1]} invalid. Try again."
+  end
 end
 
 puts "Winner of current round is: #{board.winner?}"
