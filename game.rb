@@ -3,6 +3,8 @@ module FieldHelper
   TYPE_X = '[X]'.freeze
   TYPE_O = '[O]'.freeze
   TYPE_EMPTY = '[_]'.freeze
+
+  attr_accessor :TYPE_X, :TYPE_O, :TYPE_EMPTY
 end
 
 # A playing board
@@ -67,9 +69,7 @@ class Board
   end
 
   def empty_spots?
-    var = @board.any? { |row| row.any? { |field| field.type == TYPE_EMPTY } }
-    puts var
-    var
+    @board.any? { |row| row.any? { |field| field.type == TYPE_EMPTY } }
   end
 end
 
@@ -97,7 +97,7 @@ loop do
   puts "Inloop"
   break if board.winner?
 
-  current_type = TYPE_X
+  current_type = Field.TYPE_X
   board.beautify
 
   puts 'Chose your move. (input: ROW COLLUMN, for example: 1 A)'
