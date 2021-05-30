@@ -35,15 +35,12 @@ class Board
 
   def winner?
     # checks if board has winner (or draw) and returns the winner type
-    puts "winner row: #{winner_rows?}, cols: #{winner_collumns?}, diags: #{winner_diagonals?}"
     winner_type = winner_rows?
     winner_type ||= winner_collumns?
     winner_type ||= winner_diagonals?
 
-    puts "winner type evald as #{winner_type}"
-
     # if a draw
-    return TYPE_EMPTY if !empty_spots? && winner_type == false
+    return TYPE_EMPTY if !empty_spots? && !winner_type
 
     winner_type
   end
@@ -52,25 +49,32 @@ class Board
 
   def winner_rows?
     @board.each do |row|
-      return row[0] if row.all? { |field| field == row[0] }
+      proposed_winner = row[0]
+      return proposed_winner if row.all? { |field| field == proposed_winner } && !proposed_winner.empty?
     end
     false
   end
 
   def winner_collumns?
     @board.transpose.each do |collumn|
-      return collumn[0] if collumn.all? { |field| field == collumn[0] }
+      proposed_winner = collumn[0]
+      return proposed_winner if collumn.all? { |field| field == proposed_winner } && !proposed_winner.empty?
     end
     false
   end
 
   def winner_diagonals?
+    proposed_winner = @board[1][1]
     # Diagonal
-    return false unless (1..2).collect { |i| @board[i][i] }.all? { |field| field == @board[0][0] }
+    if [0, 2].collect { |i| @board[i][i] }.all? { |field| field == proposed_winner } && !proposed_winner.empty?
+      return proposed_winner
+    end
     # Antediagonal
-    return false unless (@board[0][2] == @board[1][1]) == @board[2][0]
+    if (@board[0][2] == proposed_winner) && (@board[2][0] == proposed_winner) && !proposed_winner.empty?
+      return proposed_winner
+    end
 
-    true
+    false
   end
 
   def empty_spots?
@@ -93,6 +97,10 @@ class Field
 
   def ==(other)
     @type == other.type
+  end
+
+  def empty?
+    @type == TYPE_EMPTY
   end
 end
 
@@ -131,4 +139,5 @@ until board.winner?
   end
 end
 
+board.beautify
 puts "Winner of current round is: #{board.winner?}"
