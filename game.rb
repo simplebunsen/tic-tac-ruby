@@ -3,8 +3,6 @@ module FieldHelper
   TYPE_X = '[X]'.freeze
   TYPE_O = '[O]'.freeze
   TYPE_EMPTY = '[_]'.freeze
-
-  attr_accessor :TYPE_X, :TYPE_O, :TYPE_EMPTY
 end
 
 # A playing board
@@ -90,12 +88,6 @@ end
 
 input_helper_array = ['A', 'B', 'C']
 
-# bootleg type variables
-TYPE_X = '[X]'.freeze
-TYPE_O = '[O]'.freeze
-TYPE_EMPTY = '[_]'.freeze
-
-
 puts 'Welcome to the bi-annual Tic Tac Ruby Championships!'
 board = Board.new
 puts 'X starts.'
@@ -107,15 +99,15 @@ loop do
 
   case move_number.odd?
   when true
-    current_type = TYPE_X
+    current_type = FieldHelper::TYPE_X
   when false
-    current_type = TYPE_O
+    current_type = FieldHelper::TYPE_O
   end
 
   board.beautify
 
   puts 'Chose your move. (input: ROW COLLUMN, for example: 1 A)'
-  move = input.split(' ')
+  move = gets.chomp.upcase.split(' ')
 
   unless (1..3).include?(move[0].to_i) && input_helper_array.include?(move[1]) && move[2].nil?
     puts "Error in your input #{move}, try again!"
