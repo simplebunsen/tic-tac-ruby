@@ -20,17 +20,22 @@ class Board
     @board.map { |x| x.join('') }.each_with_index { |e, i| puts "[#{i + 1}]" << e }
   end
 
-  # returns false if move could not be made
+  # Put in beatify related values, returns false if move could not be made
   def move(x_pos, y_pos, type)
+    # convert y_pos and x_pos to proper array index integer!
+    y_pos = y_pos.ord - 65
+    x_pos = x_pos.to_i - 1
+
     # inputs move of type Z at X,Y (if not illegal!)
     return false unless @board[x_pos][y_pos].type == TYPE_EMPTY
 
-    @board[x_pos][y_pos] = type
+    @board[x_pos][y_pos].type = type
     true
   end
 
   def winner?
     # checks if board has winner (or draw) and returns the winner type
+    puts "winner row: #{winner_rows?}, cols: #{winner_collumns?}, diags: #{winner_diagonals?}"
     winner_type = winner_rows?
     winner_type ||= winner_collumns?
     winner_type ||= winner_diagonals?
@@ -39,8 +44,6 @@ class Board
 
     # if a draw
     return TYPE_EMPTY if !empty_spots? && winner_type == false
-
-    puts "got past draw"
 
     winner_type
   end
@@ -62,9 +65,12 @@ class Board
   end
 
   def winner_diagonals?
-    (0..2).collect { |i| @board[i][i] }.all? { |field| field == @board[1][1] }
-    #TODO: Antediagonal
-    false
+    # Diagonal
+    return false unless (1..2).collect { |i| @board[i][i] }.all? { |field| field == @board[0][0] }
+    # Antediagonal
+    return false unless (board[0][2] == board[1][1]) == board[2][0]
+
+    true
   end
 
   def empty_spots?
@@ -90,35 +96,34 @@ input_helper_array = ['A', 'B', 'C']
 
 puts 'Welcome to the bi-annual Tic Tac Ruby Championships!'
 board = Board.new
-puts 'X starts.'
 
 move_number = 0
 
-loop do
-  break if board.winner?
+until board.winner?
 
   case move_number.odd?
   when true
-    current_type = FieldHelper::TYPE_X
-  when false
     current_type = FieldHelper::TYPE_O
+  when false
+    current_type = FieldHelper::TYPE_X
   end
 
   board.beautify
 
-  puts 'Chose your move. (input: ROW COLLUMN, for example: 1 A)'
-  move = gets.chomp.upcase.split(' ')
+  puts "Player #{current_type}: Chose your move. (input: ROW COLLUMN, for example: 1 A)"
+  current_move = gets.chomp.upcase.split(' ')
 
-  unless (1..3).include?(move[0].to_i) && input_helper_array.include?(move[1]) && move[2].nil?
-    puts "Error in your input #{move}, try again!"
+  # TODO: Might be better done with error handling, got to learn it first though
+  unless (1..3).include?(current_move[0].to_i) && input_helper_array.include?(current_move[1]) && current_move[2].nil?
+    puts "Error in your input #{current_move}, try again!"
     next
   end
 
-  if board.move(move[0], move[1], current_type)
+  if board.move(current_move[0], current_move[1], current_type)
     move_number += 1
     puts 'successful'
   else
-    puts "move to #{move[0]} / #{move[1]} invalid. Try again."
+    puts "move to #{current_move[0]} / #{current_move[1]} invalid. Try again."
   end
 end
 
