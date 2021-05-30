@@ -68,7 +68,7 @@ class Board
     # Diagonal
     return false unless (1..2).collect { |i| @board[i][i] }.all? { |field| field == @board[0][0] }
     # Antediagonal
-    return false unless (board[0][2] == board[1][1]) == board[2][0]
+    return false unless (@board[0][2] == @board[1][1]) == @board[2][0]
 
     true
   end
@@ -89,6 +89,10 @@ class Field
 
   def to_s
     @type
+  end
+
+  def ==(other)
+    @type == other.type
   end
 end
 
